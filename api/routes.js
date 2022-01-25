@@ -6,6 +6,6 @@ module.exports = (app) => {
     // ... chargement de vos routes ici
 
 
-    // Si une routes n'existe pas erreur 404
+    // Si une route n'existe pas, erreur 404
     app.route("*").all((req,res) => { res.status(404).send(); });
 };
