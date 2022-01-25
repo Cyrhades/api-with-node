@@ -7,7 +7,7 @@ module.exports = class {
     get(req, res) {
         let filter = {};
         // @todo : gérer les filtres
-        Schema.find(filter).exec((err, records) => {
+        Schema.find(filter, 'firstname lastname email isAdmin date').exec((err, records) => {
             if (!err) return res.status(200).json(records);
             else {
                 return res.status(400).json({error : `Une erreur est survenue.`});
@@ -21,7 +21,7 @@ module.exports = class {
             return res.status(400).json({error : `La demande n'est pas valide.`});
         }
 
-        Schema.findById(req.params.id).exec((err, record) => {
+        Schema.findById(req.params.id, 'firstname lastname email isAdmin date').exec((err, record) => {
             if (!err) {
                 if(record) return res.status(200).json(record);
                 else return res.status(404).json({error : `L'utilisateur n'existe pas.`});
