@@ -14,7 +14,6 @@ mongoose.connect(
     process.env.MONGODB_URI, 
     {connectTimeoutMS : 3000, socketTimeoutMS: 20000, useNewUrlParser: true, useUnifiedTopology: true }
 );
-const db = mongoose.connection;
 
 //--------------------------------------------------------------------
 //      Chargement des routes liées à l'API
