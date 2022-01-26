@@ -1,10 +1,14 @@
 module.exports = (app) => {
 
+    app.get('/', (req, res) => {
+        res.send('Hello World!');
+    });
+    
     // Chargement des routes pour la collection users
     require('./users/routes')(app);
 
     // ... chargement de vos routes ici
-
+    
 
     // Si une route n'existe pas, erreur 404
     app.route("*").all((req,res) => { res.status(404).send(); });
