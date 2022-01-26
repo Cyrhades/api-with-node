@@ -1,20 +1,24 @@
 let User = require('./users.js');
-module.exports = (app) => {
-    // Récupére tous les utilisateurs
-    app.get('/users', (new User).get);
-    // Récupére 1 utilisateur via son ID
-    app.get('/users/:id', (new User).getById);
-    
-    // Création d'un utilisateur
-    app.post('/users', (new User).add);
 
-    // Modification d'un utilisateur via son ID
-    app.put('/users/:id', (new User).update);
-    
-    // Suppression d'un utilisateur via son ID
-    app.delete('/users/:id', (new User).delete);
+const express = require('express');
+const router = express.Router();
 
-    // Les autres méthodes sont donc non allouées
-    app.route('/users').all((req,res) => { res.status(405).send(); });
-    app.route('/users/:id').all((req,res) => { res.status(405).send(); });
-};
+// Récupére tous les utilisateurs
+router.get('/', (new User).get);
+// Récupére 1 utilisateur via son ID
+router.get('/:id', (new User).getById);
+
+// Création d'un utilisateur
+router.post('/', (new User).add);
+
+// Modification d'un utilisateur via son ID
+router.put('/:id', (new User).update);
+
+// Suppression d'un utilisateur via son ID
+router.delete('/:id', (new User).delete);
+
+// Les autres méthodes sont donc non allouées
+router.route('/').all((req,res) => { res.status(405).send(); });
+router.route('/:id').all((req,res) => { res.status(405).send(); });
+
+module.exports = router;
