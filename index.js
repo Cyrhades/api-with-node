@@ -1,6 +1,8 @@
-const express = require('express');
+import 'dotenv/config';
+import express from 'express';
+import mongoose from 'mongoose';
+
 const app = express();
-require('dotenv').config();
 
 
 // permet de parser le contenu du body des requêtes, 
@@ -9,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 //--------------------------------------------------------------------
 //      Chargement de MongoDB
 //--------------------------------------------------------------------
-const mongoose = require('mongoose');
+
 mongoose.connect(
     process.env.MONGODB_URI, 
     {connectTimeoutMS : 3000, socketTimeoutMS: 20000, useNewUrlParser: true, useUnifiedTopology: true }
@@ -18,7 +20,7 @@ mongoose.connect(
 //--------------------------------------------------------------------
 //      Chargement des routes liées à l'API
 //--------------------------------------------------------------------
-const apiRoutes = require('./api/routes');
+import apiRoutes from './api/routes.js';
 app.use('/api', apiRoutes);
 
 //--------------------------------------------------------------------

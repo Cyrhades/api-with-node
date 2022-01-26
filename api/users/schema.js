@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const UserSchema = mongoose.Schema({
     firstname: { type: String, match: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁ ÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ },
@@ -10,4 +10,4 @@ const UserSchema = mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('users', UserSchema); 
+export default mongoose.model('users', UserSchema); 

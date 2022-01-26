@@ -1,8 +1,10 @@
-const Schema = require('./schema.js');
-const uuidAPIKey = require('uuid-apikey');
-const ObjectID = require('mongoose').Types.ObjectId;
+import Schema from './schema.js';
+import uuidAPIKey from 'uuid-apikey';
+import mongoose from 'mongoose';
 
-module.exports = class {
+const ObjectID = mongoose.Types.ObjectId;
+
+class User {
 
     get(req, res) {
         let filter = {};
@@ -102,4 +104,6 @@ module.exports = class {
             }
         });
     }
-};
+}
+
+export default new User();
