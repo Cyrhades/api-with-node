@@ -1,9 +1,6 @@
 module.exports = (app) => {
 
-    app.get('/', (req, res) => {
-        res.send('Hello World!');
-    });
-    
+
     // Chargement des routes pour la collection users
     require('./users/routes')(app);
 
