@@ -1,7 +1,11 @@
 import express from 'express';
+import apiAuthRoutes from './auth/routes.js';
 import apiUsersRoutes from './users/routes.js';
+
 const router = express.Router();
 
+// Création de la route pour l'authentification
+router.use('/auth', apiAuthRoutes);
 
 // Chargement des routes pour la collection users
 router.use('/users', apiUsersRoutes);
