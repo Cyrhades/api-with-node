@@ -1,6 +1,7 @@
 import Schema from './schema.js';
 import uuidAPIKey from 'uuid-apikey';
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const ObjectID = mongoose.Types.ObjectId;
 
@@ -9,7 +10,7 @@ class User {
     get(req, res) {
         let filter = {};
         // @todo : gérer les filtres
-        Schema.find(filter, 'firstname lastname email isAdmin date').exec((err, records) => {
+        Schema.find(filter, 'firstname lastname email roles date').exec((err, records) => {
             if (!err) return res.status(200).json(records);
             else {
                 return res.status(400).json({error : `Une erreur est survenue.`});
@@ -23,7 +24,7 @@ class User {
             return res.status(400).json({error : `La demande n'est pas valide.`});
         }
 
-        Schema.findById(req.params.id, 'firstname lastname email isAdmin date').exec((err, record) => {
+        Schema.findById(req.params.id, 'firstname lastname email roles date').exec((err, record) => {
             if (!err) {
                 if(record) return res.status(200).json(record);
                 else return res.status(404).json({error : `L'utilisateur n'existe pas.`});
@@ -37,7 +38,6 @@ class User {
     }
 
     add(req, res) {
-        let bcrypt = require('bcryptjs');
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(req.body.password, salt, (err, hash) => {
                 if(!err) {
@@ -71,7 +71,6 @@ class User {
         Schema.findById(req.params.id).exec((err, record) => {
             if (!err) {
                 if(record) {
-                    
                     // On ne permet pas la modification du mot de passe et ou de l'apiKey
                     // avec cette API, il faut un niveau d'information complémentaire
                     const updateRecord = {
