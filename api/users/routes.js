@@ -1,21 +1,21 @@
-import Entity from './users.js';
+import service from './users.js';
 import express from 'express';
 
 const router = express.Router();
 
 // Récupére tous les utilisateurs
-router.get('/', Entity.get);
+router.get('/', service.get);
 // Récupére 1 utilisateur via son ID
-router.get('/:id', Entity.getById);
+router.get('/:id', service.getById);
 
 // Création d'un utilisateur
-router.post('/', Entity.add);
+router.post('/', service.add);
 
 // Modification d'un utilisateur via son ID
-router.put('/:id', Entity.update);
+router.put('/:id', service.update);
 
 // Suppression d'un utilisateur via son ID
-router.delete('/:id', Entity.delete);
+router.delete('/:id', service.delete);
 
 // Les autres méthodes sont donc non allouées
 router.route('/').all((req,res) => { res.status(405).send(); });
