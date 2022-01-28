@@ -3,7 +3,36 @@ import uuidAPIKey from 'uuid-apikey';
 import jwt from 'jsonwebtoken';
 
 class Auth {
-
+    /**
+     * @api {get} /auth/ Request JWTToken
+     * @apiName GetJWTToken
+     * @apiGroup Auth
+     *
+     * @apiHeader {String} authorization apikey <API_KEY>.
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "apikey": "1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X"
+     *     }
+     * 
+     * @apiError {String} Invalide API Key.
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400 OK
+     *     {
+     *       "error": "La demande n'est pas valide."
+     *     }
+     * @apiError {String} Not Exists API Key.
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 404 OK
+     *     {
+     *       "error": "La clé API n'existe pas."
+     *     }
+     * @apiSuccess {String} JWT.
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjI3NmU2NmU1ODE5ZWM5YzZiZDRhMCIsImZpcnN0bmFtZSI6IkN5cmlsIiwibGFzdG5hbWUiOiJMRUNPTVRFIiwiZW1haWwiOiJjeXJoYWRlczc2QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNjQzMzc3MDQ0fQ.4bpgJxL2mKMafFj6bciMaGxoDSg5K-lA2va_pTKmmQM"
+     *     }
+     */
     getAuthByApiKey(req, res) {
         // Validation de la clef API, ApiKey : 1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X
         if (uuidAPIKey.isAPIKey(req.headers.apikey) !== true ) {
