@@ -1,7 +1,7 @@
 {
-  "name": "mediatheque",
+  "name": "immobilier",
   "version": "1.0.0",
-  "description": "Création d’une API permettant de gérer une médiathéque, liste de possessions, liste d’envies. ",
+  "description": "Création d’une API permettant de gérer des biens immobilier ",
   "main": "index.js",
   "type": "module",
   "scripts": {
