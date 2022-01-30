@@ -20,10 +20,12 @@ router.use((req, res, next) => {
                     next();
                     return;
                 }
-            } catch(error) {}
+            } catch(error) {
+                next();
+                return;
+            }
         }
     }
-    res.status(403).send(); 
 });
 
 // Chargement des routes pour la collection users

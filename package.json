@@ -1,21 +1,29 @@
 {
-  "name": "mediatheque",
+  "name": "immobilier",
   "version": "1.0.0",
-  "description": "Création d’une API permettant de gérer une médiathéque, liste de possessions, liste d’envies. ",
+  "description": "Création d’une API permettant de gérer des biens immobilier ",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive --exit"
   },
   "author": "Cyril LECOMTE",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
     "uuid-apikey": "^1.5.3"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": {
+    "run": ["test"]
   }
 }

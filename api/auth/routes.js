@@ -4,7 +4,7 @@ import express from 'express';
 const router = express.Router();
 
 // Récupére tous les utilisateurs
-router.get('/', service.getAuthByApiKey);
+router.get('/', service.basicAuthToAPiKey, service.getAuthByApiKey);
 
 
 // Les autres méthodes sont donc non allouées
