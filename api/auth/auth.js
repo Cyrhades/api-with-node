@@ -10,10 +10,10 @@ class Auth {
      * @apiName GetJWTToken via APIkEY
      * @apiGroup Auth
      *
-     * @apiHeader {String} authorization apikey <API_KEY>.
+     * @apiHeader {String} authorization x-api-key <API_KEY>.
      * @apiHeaderExample {json} Header-Example:
      *     {
-     *       "apikey": "1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X"
+     *       "x-api-key": "1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X"
      *     }
      * 
      * @apiError {String} Invalide API Key.
@@ -38,12 +38,12 @@ class Auth {
      */
     getAuthByApiKey(req, res) {
         // Validation de la clef API, ApiKey : 1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X
-        if (uuidAPIKey.isAPIKey(req.headers.apikey) !== true ) {
+        if (typeof req.headers['x-api-key'] == 'undefined' || uuidAPIKey.isAPIKey(req.headers['x-api-key']) !== true ) {
             return res.status(400).json({error : `La demande n'est pas valide.`});
         }
 
         // Si la clef est valide, on peut continuer
-        Schema.findOne({apiKey : req.headers.apikey}, 'firstname lastname email roles').exec((err, record) => {
+        Schema.findOne({apiKey : req.headers['x-api-key']}, 'firstname lastname email roles').exec((err, record) => {
             if (!err) {    
                 if (record) {
                     const payload = {
@@ -94,14 +94,17 @@ class Auth {
     basicAuthToAPiKey(req, res, next) {
         
         // Si on n'est pas en basic authentification ...
-        if (typeof req.headers.authorization == 'undeifned' || req.headers.authorization.split(' ')[0] !== 'Basic') {
-            // ... on peut directement aller au prochaine middleware
+        if (typeof req.headers.authorization === 'undefined' || 
+            (typeof req.headers.authorization !== 'undefined' && req.headers.authorization.split(' ')[0] !== 'Basic')
+            ) {
+            // ... on peut directement aller au prochain middleware
             next();
             return;
         }
         const base64Credentials =  req.headers.authorization.split(' ')[1];
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
         const [login, password] = credentials.split(':');
+        console.log(login, password);
         // on récupére le mot de passe et le password        
         Schema.findOne({login}, 'apiKey password').exec((err, record) => {
             if (err || !record) { 
@@ -112,7 +115,7 @@ class Auth {
                 bcrypt.compare(password, record.password).then((result) =>{
                     if(result === true) {
                         // On enregistre la clef API dans la requête
-                        req.headers.apikey = record.apiKey;
+                        req.headers['x-api-key'] = record.apiKey;
                         next();
                         return;
                     } else res.status(401).json({error : `L'authentification a échoué.`});
