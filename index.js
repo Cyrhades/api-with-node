@@ -7,6 +7,7 @@ const app = express();
 // pour permettre le chargement des variables d'environnement
 dotenv.config({ path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env' });
 
+
 // permet de parser le contenu du body des requêtes, 
 // l'option extended true permet de parser les objets
 app.use(express.urlencoded({ extended: true }));
