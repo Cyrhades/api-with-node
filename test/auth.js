@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp  from 'chai-http';
 chai.use(chaiHttp);
-const  expect = chai.expect;
+const expect = chai.expect;
 
 describe('Authentication API Key', () => {
     // quand la clef existe
