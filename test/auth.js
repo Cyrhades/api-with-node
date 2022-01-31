@@ -11,7 +11,7 @@ describe('Authentication API Key', () => {
             .set('x-api-key', process.env.API_KEY)
             .send()
             .then((res) => {
-                expect(res).to.have.status(201);
+                expect(res).to.have.status(200);
             });
     });
 
