@@ -1,38 +1,32 @@
 import express from 'express';
 import apiAuthRoutes from './auth/routes.js';
 import apiUsersRoutes from './users/routes.js';
-import jwt from 'jsonwebtoken';
+import apiContactsRoutes from './contacts/routes.js';
+
+import jwt from './jwt.js';
+import jwtPermissions from 'express-jwt-permissions'
+const guard = jwtPermissions({ requestProperty: 'identity'});
 
 const router = express.Router();
 
 // Création de la route pour l'authentification
 router.use('/auth', apiAuthRoutes);
 
-// A partir d'ici on peut controler que le JWT est valide pour l'ensemble des routes
-router.use((req, res, next) => {
-    // Validation du JWT
-    if (req.headers.authorization) {
-        // On récupère le JWT dans le header
-        const token = req.headers.authorization.split(' ')[1] || null;
-        if(token) {
-            try{
-                if(jwt.verify(token, process.env.JWT_SECRET_KEY)) {
-                    next();
-                    return;
-                }
-            } catch(error) {
-                next();
-                return;
-            }
-        }
-    }
-});
+// Chargement des routes pour la collection users
+router.use('/users', jwt.control, guard.check('USER', 'ADMIN', 'ESTATE_AGENT'), apiUsersRoutes);
 
 // Chargement des routes pour la collection users
-router.use('/users', apiUsersRoutes);
+router.use('/contacts', jwt.control, guard.check('USER', 'ADMIN', 'ESTATE_AGENT'), apiContactsRoutes);
 
 // ... chargement de vos routes ici
 
+// Gestion des erreurs de droits (express-jwt-permissions)
+router.use('*', (err, req, res, next) => {
+    if((err.code === 'permission_denied')) {
+        res.status(403).json({error : `Vous n'avez pas les droits pour accéder à cette ressource.`});
+    }
+    next(); // on poursuis vers le middleware suivant (erreur 404)
+});
 
 // Si une route n'existe pas, erreur 404
 router.route("*").all((req,res) => { res.status(404).send(); });
