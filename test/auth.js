@@ -11,6 +11,10 @@ describe('Authentication API Key', () => {
             .set('x-api-key', process.env.API_KEY)
             .send()
             .then((res) => {
+                if(res.body.token) {  
+                    const regexToken = new RegExp('^(?:[A-Za-z0-9+/])*\(?:[A-Za-z0-9+/])*\.(.*)$');
+                    expect(regexToken.test(res.body.token)).to.be.true;
+                }
                 expect(res).to.have.status(200);
             });
     });
@@ -67,14 +71,18 @@ describe('Authentication Basic', async () => {
     });
 
 
-    // quand la clef n'est pas correcte
+    // Avec authentification Basic Correcte
     it('with correct Basic auth', async () => {
         await chai.request(process.env.URL_TEST_API)
             .get('/auth')
-            // Je retire le premier caractere de l'API key pour quelle soit incorrecte
+            // Authentification login / mot de passe
             .set('Authorization', 'Basic '+Buffer.from('cyrhades76@gmail.com:123456').toString('base64'))
             .send()
-            .then((res) => {
+            .then((res) => {                
+                if(res.body.token) {  
+                    const regexToken = new RegExp('^(?:[A-Za-z0-9+/])*\(?:[A-Za-z0-9+/])*\.(.*)$');
+                    expect(regexToken.test(res.body.token)).to.be.true;
+                }
                 expect(res).to.have.status(200);
             });
     });
