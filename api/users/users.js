@@ -8,13 +8,29 @@ const ObjectID = mongoose.Types.ObjectId;
 class User {
 
     get(req, res) {
-        let filter = {};
+        let page = parseInt(req.query.page) || 1;
+        let limit = 10; // nombre d'éléments par page
+        let offset = (limit*page)-limit;
+        
         // @todo : gérer les filtres
-        Schema.find(filter, 'firstname lastname email roles date').exec((err, records) => {
-            if (!err) return res.status(200).json(records);
-            else {
-                return res.status(400).json({error : `Une erreur est survenue.`});
-            }
+        let filter = {};
+        Schema.count(filter).then((count) => {
+            let last = Math.ceil(count/limit);
+            Schema.find(filter, 'firstname lastname email roles date', { limit: limit, skip: offset }).exec((err, records) => {
+                if (!err) return res.status(200).json({
+                    records, 
+                    nbRecords : count,
+                    page : {
+                        current : page,
+                        previous: (page > 1) ? page-1 : null,
+                        next: (page < last) ? page+1 : null,
+                        last: last
+                    }
+                });   
+                else {
+                    return res.status(400).json({error : `Une erreur est survenue.`});
+                }
+            });
         });
     }
 
@@ -51,13 +67,13 @@ class User {
                     newRecord.save((error, record) => {
                         if(!error) return res.status(201).json(record);
                         else if(error.code == 11000){
-                            return res.status(400).json({error : `Déjà existant`});
+                            return res.status(400).json({error : `L'utilisateur existe déjà.`});
                         } else {
-                            return res.status(400).json({error : `L'enregistrement a échoué.`});
+                            return res.status(400).json({error : `L'enregistrement de l'utilisateur a échoué.`});
                         }
                     });
                 } else {
-                    return res.status(400).json({error : `L'enregistrement a échoué.`});
+                    return res.status(400).json({error : `L'enregistrement de l'utilisateur a échoué.`});
                 }
             });
         });
@@ -81,7 +97,7 @@ class User {
                     Schema.findByIdAndUpdate(req.params.id, { $set: updateRecord}, (err) => {
                         if (!err) return res.status(201).json(record);
                         else {
-                            return res.status(400).json({error : `La modification a échoué.`});
+                            return res.status(400).json({error : `La modification de l'utilisateur a échoué.`});
                         }
                     });
                 }
@@ -99,7 +115,7 @@ class User {
         Schema.deleteOne({id : req.params.id}, (err) => {
             if (!err) return res.status(200).send();
             else {
-                return res.status(400).json({error : `La suppression a échoué.`});
+                return res.status(400).json({error : `La suppression de l'utilisateur a échoué.`});
             }
         });
     }

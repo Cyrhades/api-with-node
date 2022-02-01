@@ -51,7 +51,7 @@ class Auth {
                         firstname : record.firstname,
                         lastname : record.lastname, 
                         email : record.email, 
-                        roles : record.roles
+                        permissions: record.roles
                     };
                     // Générer un JWT
                     let token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
@@ -104,7 +104,7 @@ class Auth {
         const base64Credentials =  req.headers.authorization.split(' ')[1];
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
         const [login, password] = credentials.split(':');
-        console.log(login, password);
+
         // on récupére le mot de passe et le password        
         Schema.findOne({login}, 'apiKey password').exec((err, record) => {
             if (err || !record) { 
