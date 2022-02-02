@@ -1,4 +1,4 @@
-import Schema from './schema.js';
+import Schema from '../../src/repository/schema/contacts.js';
 import mongoose from 'mongoose';
 
 const ObjectID = mongoose.Types.ObjectId;
