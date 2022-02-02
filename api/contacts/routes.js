@@ -1,21 +1,21 @@
-import service from './contacts.js';
+import controller from './controller.contacts.js';
 import express from 'express';
 
 const router = express.Router();
 
 // Récupére tous les utilisateurs
-router.get('/', service.get);
+router.get('/', controller.get);
 // Récupére 1 utilisateur via son ID
-router.get('/:id', service.getById);
+router.get('/:id', controller.getById);
 
 // Création d'un utilisateur
-router.post('/', service.add);
+router.post('/', controller.add);
 
 // Modification d'un utilisateur via son ID
-router.put('/:id', service.update);
+router.put('/:id', controller.update);
 
 // Suppression d'un utilisateur via son ID
-router.delete('/:id', service.delete);
+router.delete('/:id', controller.delete);
 
 // Les autres méthodes sont donc non allouées
 router.route('/').all((req,res) => { res.status(405).send(); });

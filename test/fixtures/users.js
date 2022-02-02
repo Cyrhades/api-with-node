@@ -7,7 +7,7 @@ export default {
         return this
     },
     users : async (nb) => {
-        const Schema = (await import('../../api/users/schema.js')).default;
+        const Schema = (await import('../../src/repository/schema/users.js')).default;
         const uuidAPIKey = (await import('uuid-apikey')).default;
         const bcrypt = (await import('bcryptjs')).default;
 

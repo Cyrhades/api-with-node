@@ -63,7 +63,7 @@ describe('Authentication Basic', async () => {
         await chai.request(process.env.URL_TEST_API)
             .get('/auth')
             // Je remplace le premier caractere de l'API key pour quelle n'existe pas
-            .set('Authorization', 'Basic '+Buffer.from('cyrhades76@gmail.com:azerty').toString('base64'))
+            .set('Authorization', 'Basic '+Buffer.from('toto@yopmail.com:azerty').toString('base64'))
             .send()
             .then((res) => {
                 expect(res).to.have.status(401);
@@ -76,7 +76,7 @@ describe('Authentication Basic', async () => {
         await chai.request(process.env.URL_TEST_API)
             .get('/auth')
             // Authentification login / mot de passe
-            .set('Authorization', 'Basic '+Buffer.from('cyrhades76@gmail.com:123456').toString('base64'))
+            .set('Authorization', 'Basic '+Buffer.from(`${process.env.ACCOUNT_EMAIL}:${process.env.ACCOUNT_PWD}`).toString('base64'))
             .send()
             .then((res) => {                
                 if(res.body.token) {  
