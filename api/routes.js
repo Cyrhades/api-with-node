@@ -3,6 +3,7 @@ import express from 'express';
 import apiAuthRoutes from './auth/routes.js';
 import apiUsersRoutes from './users/routes.js';
 import apiContactsRoutes from './contacts/routes.js';
+
 // Gestion des Jwt
 import jwtPermissions from 'express-jwt-permissions';
 import jwt from '../src/service/service.jwt.js';

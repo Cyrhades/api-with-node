@@ -1,6 +1,6 @@
 export default class AbstractRepository
 {  
-    constructor(schema, messages){
+    constructor(schema, messages) {
         this.Schema = schema;
         this.messages = messages;
     }

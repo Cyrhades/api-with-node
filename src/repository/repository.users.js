@@ -1,4 +1,4 @@
-import AbstractRepository from './abastract.repository.js';
+import AbstractRepository from './abstract.repository.js';
 import Schema from './schema/users.js';
 import bcrypt from 'bcryptjs';
 
@@ -10,7 +10,7 @@ export default class extends AbstractRepository {
             "insert": `La création de l'utilisateur a échoué.`,
             "update": `La modification de l'utilisateur a échoué.`,
             "delete": `L'utilisateur a été supprimé.`,
-            "invbalid": `La demande n'est pas valide.`
+            "invalid": `La demande n'est pas valide.`
         });        
     }
 
