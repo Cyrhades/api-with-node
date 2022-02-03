@@ -17,7 +17,9 @@ export default () => {
             }); 
         });
 
-
+        /*************************************************************************
+         **             Tests par findById       
+         *************************************************************************/
         it('Admin par son ID ', async () => {
             await UserRepo.findById(admin.id)
                 .then((record)=> {
@@ -49,5 +51,30 @@ export default () => {
                     assert.equal(err, `La demande n'est pas valide.`);                    
                 });      
         });
+
+
+        /*************************************************************************
+         **             Tests par findById       
+         *************************************************************************/
+        it(`Nombre d'utilisateur`, async () => {
+            await UserRepo.count()
+                .then((result)=> { 
+                    assert.equal(result, 20);                    
+                });      
+        });
+
+
+        it(`Nombre d'utilisateur avec un filtre`, async () => {
+            await UserRepo.count({_id: user.id})
+                .then((result)=> { 
+                    assert.equal(result, 1);                    
+                }); 
+            await UserRepo.count({ email: user.email })
+                .then((result)=> { 
+                    assert.equal(result, 1);                    
+                });        
+        });
+
+
     });
 };
