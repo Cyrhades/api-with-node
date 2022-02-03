@@ -18,12 +18,12 @@ export default {
             let roles = ['USER'];
             // On initialise les infos du premier utilisateur
             if(i === 1) {
-                process.env.API_KEY = apiKey;
+                process.env.API_KEY_ADMIN = apiKey;
                 process.env.ACCOUNT_ADMIN_EMAIL = email;
                 process.env.ACCOUNT_PWD = '123456';
                 roles = ['USER', 'ADMIN'];
             } else if(i === 2) {
-                process.env.API_KEY = apiKey;
+                process.env.API_KEY_USER = apiKey;
                 process.env.ACCOUNT_USER_EMAIL = email;
                 process.env.ACCOUNT_PWD = '123456';
                 roles = ['USER'];
@@ -40,7 +40,15 @@ export default {
                 password: hash,
                 apiKey: apiKey,
                 roles: roles
-            }).save();
+            }).save((err, records) => {
+                if (!err) {
+                    if(i === 1) {
+                        process.env.ACCOUNT_ADMIN_ID = records.id;
+                    } else if(i === 2) {
+                        process.env.ACCOUNT_USER_ID = records.id;
+                    }
+                }
+            });            
         }
     }
 };

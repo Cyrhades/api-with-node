@@ -30,6 +30,7 @@ app.use('/api', apiRoutes);
 //--------------------------------------------------------------------
 app.listen(process.env.PORT, () => {
     console.log(`Le serveur est démarré : http://localhost:${process.env.PORT}`);
+    app.emit('server_starting');
 });
 
 export default app;

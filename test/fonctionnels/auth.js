@@ -9,7 +9,7 @@ export default () => {
         it('with valid API key', async () => {
             await chai.request(process.env.URL_TEST_API)
                 .get('/auth')
-                .set('x-api-key', process.env.API_KEY)
+                .set('x-api-key', process.env.API_KEY_ADMIN)
                 .send()
                 .then((res) => {
                     if(res.body.token) {  
@@ -26,7 +26,7 @@ export default () => {
             await chai.request(process.env.URL_TEST_API)
                 .get('/auth')
                 // Je remplace le premier caractere de l'API key pour quelle n'existe pas
-                .set('x-api-key',  '0'+process.env.API_KEY.slice(1))
+                .set('x-api-key',  '0'+process.env.API_KEY_ADMIN.slice(1))
                 .send()
                 .then((res) => {
                     expect(res).to.have.status(404);
@@ -39,7 +39,7 @@ export default () => {
             await chai.request(process.env.URL_TEST_API)
                 .get('/auth')
                 // Je retire le premier caractere de l'API key pour quelle soit incorrecte
-                .set('x-api-key', process.env.API_KEY.slice(1))
+                .set('x-api-key', process.env.API_KEY_ADMIN.slice(1))
                 .send()
                 .then((res) => {
                     expect(res).to.have.status(400);
