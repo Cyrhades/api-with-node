@@ -14,15 +14,21 @@ export default {
         // Pour chaque utilisateur à créer
         for(let i = 1; i <= nb; i++) {
             let apiKey = uuidAPIKey.create().apiKey;
-            let email = faker.faker.internet.email();
+            let email = faker.faker.internet.email().toLowerCase();
             let roles = ['USER'];
             // On initialise les infos du premier utilisateur
             if(i === 1) {
                 process.env.API_KEY = apiKey;
-                process.env.ACCOUNT_EMAIL = email;
+                process.env.ACCOUNT_ADMIN_EMAIL = email;
                 process.env.ACCOUNT_PWD = '123456';
                 roles = ['USER', 'ADMIN'];
+            } else if(i === 2) {
+                process.env.API_KEY = apiKey;
+                process.env.ACCOUNT_USER_EMAIL = email;
+                process.env.ACCOUNT_PWD = '123456';
+                roles = ['USER'];
             }
+
             // On hash le mot de passe
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync('123456', salt);

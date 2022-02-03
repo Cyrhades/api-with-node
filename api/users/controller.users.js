@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import uuidAPIKey from 'uuid-apikey';
 
 import Repo from '../../src/repository/repository.users.js';
-import data from '../../src/service/service.dataResponse.js';
+import data from '../../src/service/service.dataApiResponse.js';
 
 const UserRepo = new Repo();
 const ObjectID = mongoose.Types.ObjectId;
