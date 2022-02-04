@@ -117,7 +117,7 @@ export default () => {
                 info: 'Test Info'
              })
             .then().catch((err) => { 
-                assert.equal(err, `La création de le contact a échoué.`);                    
+                assert.equal(err, `La création du contact a échoué.`);                    
             });      
         });
        
@@ -146,7 +146,7 @@ export default () => {
         });
 
         it(`Echec de modification d'un utilisateur ID inexistant`, async () => {
-            await ContactRepo.update('0'+contact.id.slice(1), {
+            await ContactRepo.update('123'+contact.id.slice(1,3), {
                 lastname: 'TestNdomDefamille',
                 firstname: 'TestdprenomDefamille',
                 email: contact.email
@@ -174,7 +174,7 @@ export default () => {
         });
 
         it(`Echec de suppression avec ID inexistant`, async () => {
-            await ContactRepo.delete('0'+contact.id.slice(1)).then().catch((err) => { 
+            await ContactRepo.delete('123'+contact.id.slice(1,3)).then().catch((err) => { 
                 assert.equal(err, `Le contact n'existe pas.`);                    
             });
         });

@@ -160,7 +160,7 @@ export default () => {
         });
         
         it(`Echec de modification d'un utilisateur ID inexistant`, async () => {
-            await UserRepo.update('0'+admin.id.slice(1), {
+            await UserRepo.update('123'+admin.id.slice(1,3), {
                 lastname: 'TestNdomDefamille',
                 firstname: 'TestdprenomDefamille',
                 email: user.email
@@ -188,7 +188,7 @@ export default () => {
         });
 
         it(`Echec de suppression avec ID inexistant`, async () => {
-            await UserRepo.delete('0'+admin.id.slice(1)).then().catch((err) => { 
+            await UserRepo.delete('123'+admin.id.slice(1,3)).then().catch((err) => { 
                 assert.equal(err, `L'utilisateur n'existe pas.`);                    
             });
         });
