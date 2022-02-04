@@ -54,7 +54,7 @@ export default () => {
 
 
         /*************************************************************************
-         **             Tests par findById       
+         **             Tests count     
          *************************************************************************/
         it(`Nombre d'utilisateur`, async () => {
             await UserRepo.count()
@@ -62,7 +62,6 @@ export default () => {
                     assert.equal(result, 20);                    
                 });      
         });
-
 
         it(`Nombre d'utilisateur avec un filtre`, async () => {
             await UserRepo.count({_id: user.id})
@@ -76,5 +75,112 @@ export default () => {
         });
 
 
+        /*************************************************************************
+         **             Tests getAll     
+         *************************************************************************/
+        it(`Récupération de tout les utilisateurs`, async () => {
+            await UserRepo.getAll()
+                .then((records)=> { 
+                    assert.equal(records.length, 20);                    
+                });      
+        });
+       
+        it(`Récupération d'un seul utilisateur via une limite`, async () => {
+            await UserRepo.getAll({roles : 'ADMIN'}, 'roles email apiKey',{ limit: 1 })
+                .then((records)=> { 
+                    assert.equal(records[0].id, admin.id);
+                    assert.equal(records[0].email, admin.email);
+                    assert.equal(records[0].apiKey, admin.apiKey);
+                    assert.equal(records.length, 1);                    
+                });
+        });
+
+        it(`Récupération d'un seul utilisateur via un filtre`, async () => {
+            await UserRepo.getAll({_id: admin.id})
+                .then((records)=> { 
+                    assert.equal(records[0].id, admin.id);
+                    assert.equal(records[0].email, admin.email);
+                    assert.equal(records[0].apiKey, admin.apiKey);
+                    assert.equal(records.length, 1);                
+                });      
+        });
+
+
+        /*************************************************************************
+         **             Tests Insert     
+         *************************************************************************/
+        it(`Insertion d'un utilisateur`, async () => {
+            await UserRepo.insert({
+                lastname: 'TestNomDefamille',
+                firstname: 'TestprenomDefamille',
+                email: 'test@yopmail.com', 
+                password: 'test-password',
+                apiKey: '9E8F7D-F8E9-4F7B-9F8D-F8E9F7D4F7B9',
+            }).then((record)=> {
+                assert.equal(record.email, 'test@yopmail.com');
+                assert.equal(record.roles.length, 1);    // ['USER']        
+            });
+        });
+
+        it(`Echec d'insertion d'un utilisateur`, async () => {
+            await UserRepo.insert({
+                lastname: 'TestNomDefamille',
+                firstname: 'TestprenomDefamille',
+                email: admin.email, 
+                password: 'test-password',
+                apiKey: '9E8F7D-F8E9-4F7B-9F8D-F8E9F7D4F7B9',
+             })
+            .then().catch((err) => { 
+                assert.equal(err, `La création de l'utilisateur a échoué.`);                    
+            });      
+        });
+       
+     
+        /*************************************************************************
+         **             Tests Update     
+         *************************************************************************/
+        it(`Modification d'un utilisateur`, async () => {
+            await UserRepo.update(admin.id, {
+                lastname: 'TestNomDefamille',
+                firstname: 'TestprenomDefamille'
+            }).then((record)=> {
+                assert.equal(record.lastname, 'TestNomDefamille');
+                assert.equal(record.firstname, 'TestprenomDefamille');       
+            });
+        });
+        
+        it(`Echec de modification d'un utilisateur`, async () => {
+            await UserRepo.update(admin.id, {
+                lastname: 'TestNomDefamille',
+                firstname: 'TestprenomDefamille',
+                email: user.email
+            }).then().catch((err) => { 
+                assert.equal(err, `La modification de l'utilisateur a échoué.`);                    
+            });    
+        });
+        
+        /*************************************************************************
+         **             Tests Delete     
+         *************************************************************************/
+        it(`Suppression d'un utilisateur`, async () => {
+            // On commence par créer un utilisateur pour le supprimer
+            await UserRepo.insert({
+                lastname: 'newuser',
+                firstname: 'newuser',
+                email: 'newuser@yopmail.com', 
+                password: 'test-password',
+                apiKey: '9E8F7D-F8E9-4F7B-9F8D-F8E9F7D4F778',
+            }).then(async (record)=> {
+                await UserRepo.delete(record.id).then((msg) => { 
+                    assert.equal(msg, `L'utilisateur a été supprimé.`);                 
+                });
+            });
+        });
+
+        it(`Echec de suppression de tout les utilisateurs`, async () => {
+            await UserRepo.update('0'+admin.id.slice(1)).then().catch((err) => { 
+                assert.equal(err, `La modification de l'utilisateur a échoué.`);                    
+            });
+        });
     });
 };
