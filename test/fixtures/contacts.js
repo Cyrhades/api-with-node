@@ -19,15 +19,7 @@ export default {
                 phone: faker.faker.phone.phoneNumber(),
                 email: faker.faker.internet.email().toLowerCase(),
                 info: faker.faker.lorem.paragraphs()
-            }).save((err, records) => {
-                if (!err) {
-                    if(i === 1) {
-                        process.env.ACCOUNT_ADMIN_ID = records.id;
-                    } else if(i === 2) {
-                        process.env.ACCOUNT_USER_ID = records.id;
-                    }
-                }
-            });            
+            }).save();            
         }
     }
 };

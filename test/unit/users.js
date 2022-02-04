@@ -4,7 +4,7 @@ const UserRepo = new Repo();
 let user, admin;
 export default () => {
 
-    describe('Tests utilisateur', () => {
+    describe('Tests utilisateurs', () => {
         // On récupére un admin et un utilisateur pour les tests
         before( async () => {
             await UserRepo.findByEmailAndPassword(process.env.ACCOUNT_USER_EMAIL, process.env.ACCOUNT_PWD)
@@ -86,7 +86,7 @@ export default () => {
         });
        
         it(`Récupération d'un seul utilisateur via une limite`, async () => {
-            await UserRepo.getAll({roles : 'ADMIN'}, 'roles email apiKey',{ limit: 1 })
+            await UserRepo.getAll({roles: 'ADMIN'}, 'roles email apiKey',{ limit: 1 })
                 .then((records)=> { 
                     assert.equal(records[0].id, admin.id);
                     assert.equal(records[0].email, admin.email);
@@ -159,6 +159,16 @@ export default () => {
             });    
         });
         
+        it(`Echec de modification d'un utilisateur ID inexistant`, async () => {
+            await UserRepo.update('0'+admin.id.slice(1), {
+                lastname: 'TestNdomDefamille',
+                firstname: 'TestdprenomDefamille',
+                email: user.email
+            }).then().catch((err) => { 
+                assert.equal(err, `La modification de l'utilisateur a échoué.`);                    
+            });    
+        });
+
         /*************************************************************************
          **             Tests Delete     
          *************************************************************************/
@@ -177,9 +187,9 @@ export default () => {
             });
         });
 
-        it(`Echec de suppression de tout les utilisateurs`, async () => {
-            await UserRepo.update('0'+admin.id.slice(1)).then().catch((err) => { 
-                assert.equal(err, `La modification de l'utilisateur a échoué.`);                    
+        it(`Echec de suppression avec ID inexistant`, async () => {
+            await UserRepo.delete('0'+admin.id.slice(1)).then().catch((err) => { 
+                assert.equal(err, `L'utilisateur n'existe pas.`);                    
             });
         });
     });

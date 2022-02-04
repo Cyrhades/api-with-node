@@ -40,12 +40,12 @@ export default {
                 password: hash,
                 apiKey: apiKey,
                 roles: roles
-            }).save((err, records) => {
+            }).save((err, record) => {
                 if (!err) {
-                    if(i === 1) {
-                        process.env.ACCOUNT_ADMIN_ID = records.id;
-                    } else if(i === 2) {
-                        process.env.ACCOUNT_USER_ID = records.id;
+                    if(i === 0) {
+                        process.env.ACCOUNT_ADMIN_ID = record.id;
+                    } else if(i === 1) {
+                        process.env.ACCOUNT_USER_ID = record.id;
                     }
                 }
             });            
