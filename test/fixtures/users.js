@@ -6,7 +6,7 @@ export default {
         mongoose.connection.collections['users'].drop();
         return this
     },
-    users : async (nb) => {
+    create : async (nb) => {
         const Schema = (await import('../../src/repository/schema/users.js')).default;
         const uuidAPIKey = (await import('uuid-apikey')).default;
         const bcrypt = (await import('bcryptjs')).default;
