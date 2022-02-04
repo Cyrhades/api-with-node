@@ -1,6 +1,6 @@
 import Auth from './auth.js';
 import Users from './users.js';
-//import Contacts from './contacts.js';
+import Contacts from './contacts.js';
 
 export default () => {
    
@@ -9,7 +9,7 @@ export default () => {
 
         describe('🧑‍💻 Utilisateurs', Users.bind(this));
 
-        //describe('👥 Contacts', Contacts.bind(this));
+        describe('👥 Contacts', Contacts.bind(this));
 
         after(function() {
             // @todo : detect error mocha
